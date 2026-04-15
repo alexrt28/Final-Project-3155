@@ -11,7 +11,7 @@ class Order(Base):
     customer_id = Column(Integer, ForeignKey("customer.id"))
     order_item_id = Column(Integer, ForeignKey("order_item.id"))
     payment_id = Column(Integer, ForeignKey("payment.id"))
-    promo_code_id = Column(Integer, ForeignKey("promo_code.code"))
+    promo_code_id = Column(Integer, ForeignKey("promo_code.id"))
     order_date = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
     tracking_number = Column(String(100), unique=True, nullable=False)
     status = Column(String(100), nullable=False)
@@ -19,4 +19,5 @@ class Order(Base):
 
     customer = relationship("Customer", back_populates="orders")
     order_item = relationship("OrderItem", back_populates="orders")
+    payment = relationship("Payment", back_populates="orders")
     promo_code = relationship("PromoCode", back_populates="orders")
