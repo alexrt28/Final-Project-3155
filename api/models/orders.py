@@ -9,7 +9,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     customer_id = Column(Integer, ForeignKey("customer.id"))
-    order_detail_id =
+    order_item_id = Column(Integer, ForeignKey("order_item.id"))
     payment_id =
     promo_code_id =
     order_date = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
@@ -18,3 +18,4 @@ class Order(Base):
     total_price = Column(Integer, nullable=False)
 
     customer = relationship("Customer", back_populates="orders")
+    order_item = relationship("OrderItem", back_populates="orders")
