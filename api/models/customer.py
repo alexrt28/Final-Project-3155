@@ -15,5 +15,5 @@ class Customer(Base):
     phone = Column(Integer, unique=True, nullable=False)
     address = Column(String(100), unique=True, nullable=False)
 
-    orders = relationship("Order", back_populates="customer")
+    order = relationship("Order", back_populates="customer")
     review = relationship("Review", back_populates="customer")
