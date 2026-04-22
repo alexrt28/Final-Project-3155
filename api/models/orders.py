@@ -20,6 +20,6 @@ class Order(Base):
     total_price = Column(Integer, nullable=False)
 
     customer = relationship("Customer", back_populates="order")
-    order_item = relationship("OrderItem", back_populates="order")
+    order_items = relationship("OrderItem", back_populates="order")
     payment = relationship("Payment", back_populates="order")
     promo_code = relationship("PromoCode", back_populates="order")
