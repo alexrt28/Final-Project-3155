@@ -15,11 +15,12 @@ class Order(Base):
     promo_code_id = Column(Integer, ForeignKey("promo_code.id"))
 
     order_date = Column(DATETIME, nullable=False, server_default=func.now())
+    order_type = Column(String(50), nullable=False) # e.g. takeout or delivery
     tracking_number = Column(String(100), unique=True, nullable=False)
     status = Column(String(100), nullable=False)
-    total_price = Column(Integer, nullable=False)
+    total_price = Column(DECIMAL(10, 2), nullable=False)
 
     customer = relationship("Customer", back_populates="order")
     order_items = relationship("OrderItem", back_populates="order")
-    payment = relationship("Payment", back_populates="order")
+    payment = relationship("Payment", back_populates="order", uselist=False)
     promo_code = relationship("PromoCode", back_populates="order")

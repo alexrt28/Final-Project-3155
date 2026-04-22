@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 class OrderBase(BaseModel):
     order_date: datetime
+    order_type: str
     tracking_number: str
     status: str
     total_price: float

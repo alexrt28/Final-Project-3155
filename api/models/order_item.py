@@ -11,7 +11,7 @@ class OrderItem(Base):
     menu_item_id = Column(Integer, ForeignKey("menu_item.id"))
 
     quantity = Column(Integer, index=True, nullable=False)
-    subtotal = Column(Integer, nullable=False)
+    subtotal = Column(DECIMAL(10, 2), nullable=False)
 
     order = relationship("Order", back_populates="order_items")
     menu_item = relationship("MenuItem", back_populates="order_items")

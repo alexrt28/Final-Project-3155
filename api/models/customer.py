@@ -10,8 +10,8 @@ class Customer(Base):
     # removed: review_id = Column(Integer, ForeignKey("review.id"))
     name = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
-    phone = Column(Integer, unique=True, nullable=False)
-    address = Column(String(100), unique=True, nullable=False)
+    phone = Column(String(20), unique=True, nullable=False)
+    address = Column(String(100), nullable=False)
 
     order = relationship("Order", back_populates="customer")
     review = relationship("Review", back_populates="customer")
