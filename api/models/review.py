@@ -1,6 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME, CheckConstraint
 from sqlalchemy.orm import relationship
-from datetime import datetime
 from ..dependencies.database import Base
 
 
@@ -16,7 +15,7 @@ class Review(Base):
     comment = Column(String(4000))
 
     __table_args__ = (
-        CheckConstraint('rating >= 5 AND rating <= 5', name='check_rating_range')
+        CheckConstraint('rating >= 1 AND rating <= 5', name='check_rating_range'),
     )
 
     menu_item = relationship("MenuItem", back_populates="reviews")
