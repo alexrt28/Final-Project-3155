@@ -2,8 +2,6 @@ from . import customer, orders, order_item, menu_item, review, payment, promo_co
 
 from ..dependencies.database import engine, Base
 
-# added Base import above to eliminate all the lines of code below
-
 def index():
     Base.metadata.create_all(engine)
 

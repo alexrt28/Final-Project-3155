@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from sqlalchemy.sql import func
 from ..dependencies.database import Base
 
 
@@ -10,11 +10,11 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
     customer_id = Column(Integer, ForeignKey("customer.id"))
-    order_item_id = Column(Integer, ForeignKey("order_item.id"))
-    payment_id = Column(Integer, ForeignKey("payment.id"))
+    # removed: order_item_id = Column(Integer, ForeignKey("order_item.id"))
+    # removed: payment_id = Column(Integer, ForeignKey("payment.id"))
     promo_code_id = Column(Integer, ForeignKey("promo_code.id"))
 
-    order_date = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
+    order_date = Column(DATETIME, nullable=False, server_default=func.now())
     tracking_number = Column(String(100), unique=True, nullable=False)
     status = Column(String(100), nullable=False)
     total_price = Column(Integer, nullable=False)
