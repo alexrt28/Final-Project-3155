@@ -11,7 +11,7 @@ class Recipe(Base):
     menu_item_id = Column(Integer, ForeignKey("menu_item.id"))
     ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
 
-    amount = Column(Integer, index=True, nullable=False, server_default='0')
+    quantity = Column(Integer, index=True, nullable=False, server_default='0')
 
     menu_item = relationship("MenuItem", back_populates="recipes")
     ingredient = relationship("Ingredient", back_populates="recipes")

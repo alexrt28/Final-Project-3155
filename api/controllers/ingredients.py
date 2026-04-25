@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import status, Response, HTTPException
-from ..models import ingredient as model
+from ..models import ingredients as model
 from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, request):
