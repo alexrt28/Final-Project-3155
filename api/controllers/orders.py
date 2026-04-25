@@ -1,10 +1,32 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response, Depends
 from ..models import orders as model
+from ..models import recipes as recipes_model
+from ..models import ingredients as ingredients_model
 from sqlalchemy.exc import SQLAlchemyError
 
 
 def create(db: Session, request):
+    #Looks up list of ingredients for specific recipe.
+    recipe_list = db.query(recipes_model.Recipe).filter(
+        recipes_model.Recipe.menu_item_id == request.menu_item_id
+    ).all()
+
+    #Parses entire list.
+    for item in recipe_list:
+        #Finds specific ingredient needed.
+        inventory = db.query(ingredients_model.Ingredient).filter(
+            ingredients_model.Ingredient.id == item.ingredient_id
+        ).first()
+
+        #If ingredient stock is insufficient, send error. Otherwise, deduct ingredients.
+        if inventory.quantity < item.quantity:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail=f"Insufficient stock for {inventory.name}"
+            )
+        inventory.quantity -= item.quantity
+    db.commit()
+
     new_item = model.Order(
         customer_name=request.customer_name,
         description=request.description
