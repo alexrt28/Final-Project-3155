@@ -1,5 +1,7 @@
 from decimal import Decimal
 from uuid import uuid4
+from datetime import date
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
 from sqlalchemy.exc import SQLAlchemyError
@@ -200,3 +202,6 @@ def delete(db: Session, item_id):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def get_daily_revenue(db: Session, target_date: date):
+    pass
