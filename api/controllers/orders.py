@@ -1,5 +1,7 @@
 from decimal import Decimal
 from uuid import uuid4
+from datetime import date
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
 from sqlalchemy.exc import SQLAlchemyError
@@ -200,3 +202,32 @@ def delete(db: Session, item_id):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def get_daily_revenue(db: Session, target_date: date):
+    try:
+        total_revenue = db.query(func.sum(model.Order.total_price)).filter(
+            func.date(model.Order.order_date) == target_date,
+            model.Order.status != "cancelled"
+        ).scalar()
+
+        return {
+            "date": target_date,
+            "total_revenue": total_revenue
+        }
+
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+
+def get_orders_by_date_range(db: Session, start_date: date, end_date: date):
+    try:
+        orders = db.query(model.Order).filter(
+            func.date(model.Order.order_date) >= start_date,
+            func.date(model.Order.order_date) <= end_date
+        ).all()
+
+        return orders
+
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
