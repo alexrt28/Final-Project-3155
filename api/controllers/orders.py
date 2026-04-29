@@ -218,3 +218,16 @@ def get_daily_revenue(db: Session, target_date: date):
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+
+def get_orders_by_date_range(db: Session, start_date: date, end_date: date):
+    try:
+        orders = db.query(model.Order).filter(
+            func.date(model.Order.order_date) >= start_date,
+            func.date(model.Order.order_date) <= end_date
+        ).all()
+
+        return orders
+
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
