@@ -204,4 +204,17 @@ def delete(db: Session, item_id):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def get_daily_revenue(db: Session, target_date: date):
-    pass
+    try:
+        total_revenue = db.query(func.sum(model.Order.total_price)).filter(
+            func.date(model.Order.order_date) == target_date,
+            model.Order.status != "cancelled"
+        ).scalar()
+
+        return {
+            "date": target_date,
+            "total_revenue": total_revenue
+        }
+
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
