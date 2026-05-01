@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from datetime import date
 from ..controllers import orders as controller
 from ..schemas import orders as schema
 from ..dependencies.database import get_db
@@ -38,3 +39,31 @@ def update(item_id: int, request: schema.OrderUpdate, db: Session = Depends(get_
 @router.delete("/{item_id}")
 def delete(item_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, item_id=item_id)
+
+@router.get("/revenue/{target_date}")
+def get_daily_revenue(target_date: date, db: Session = Depends(get_db)):
+    results = controller.get_daily_revenue(db, target_date)
+    if results["total_revenue"] in None or results["total_revenue"] == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No orders found for {target_date}"
+        )
+    return results
+
+@router.get("/range/")
+def get_orders_range(start_date: date, end_date: date, db: Session = Depends(get_db)):
+
+    if start_date > end_date:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Start date must be before end date."
+        )
+
+    orders = controller.get_orders_by_date_range(db, start_date, end_date)
+
+    if not orders:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No orders found for range between {start_date} and {end_date}"
+        )
+    return orders

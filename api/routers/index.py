@@ -11,4 +11,3 @@ def load_routes(app):
     app.include_router(ingredients.router)
     app.include_router(payment.router)
     app.include_router(reviews.router)
-
