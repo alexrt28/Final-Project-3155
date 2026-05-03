@@ -8,7 +8,7 @@ def create(db: Session, request):
         name=request.name,
         quantity=request.quantity,
         unit=request.unit,
-        recipe_id=request.recipe_id
+
     )
 
     try:
