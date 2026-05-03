@@ -86,7 +86,7 @@ def test_apply_flat_promo_code():
     assert response.status_code == 200
     assert response.json()["final_price"] == 24.42
 
-def apply_expired_promo_code():
+def test_apply_expired_promo_code():
     create = client.post("/promo-codes/", json={
         "code": "SAVE10",
         "discount": 10,
