@@ -43,7 +43,7 @@ def delete(item_id: int, db: Session = Depends(get_db)):
 @router.get("/revenue/{target_date}")
 def get_daily_revenue(target_date: date, db: Session = Depends(get_db)):
     results = controller.get_daily_revenue(db, target_date)
-    if results["total_revenue"] in None or results["total_revenue"] == 0:
+    if results["total_revenue"] is None or results["total_revenue"] == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No orders found for {target_date}"
