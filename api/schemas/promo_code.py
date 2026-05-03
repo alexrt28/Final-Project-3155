@@ -4,10 +4,15 @@ from pydantic import BaseModel, Field
 
 
 class PromoCodeBase(BaseModel):
-    code: str = Field(validation_alias='promo_code')
+    code: str = Field(alias='promo_code')
     discount: float
     discount_type: str
     expiry: datetime
+
+    model_config = {
+        "populate_by_name": True,
+        "from_attributes": True
+    }
 
 class PromoCodeCreate(PromoCodeBase):
     pass
