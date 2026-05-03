@@ -12,6 +12,7 @@ class Recipe(Base):
     ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
 
     quantity = Column(Integer, index=True, nullable=False, server_default='0')
+    unit = Column(String(50), index=True, nullable=False)
 
     menu_item = relationship("MenuItem", back_populates="recipes")
     ingredient = relationship("Ingredient", back_populates="recipes")

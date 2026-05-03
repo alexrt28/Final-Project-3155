@@ -6,7 +6,7 @@ from ..controllers import ingredients as controller
 
 
 router = APIRouter(
-    tags=["ingredients"],
+    tags=["Ingredients"],
     prefix="/ingredients"
 )
 
@@ -26,6 +26,6 @@ def get_ingredient(item_id: int, db: Session = Depends(get_db)):
 def update_ingredient(item_id: int, request: schema.IngredientUpdate, db: Session = Depends(get_db)):
     return controller.update(db=db, item_id=item_id, request=request)
 
-@router.delete("/{item_id}}")
+@router.delete("/{item_id}")
 def delete_ingredient(item_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, item_id=item_id)

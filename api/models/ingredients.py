@@ -8,6 +8,6 @@ class Ingredient(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     quantity = Column(Integer, nullable=False)
-    unit = Column(String(20))
+    unit = Column(String(50), nullable=False)
 
     recipes = relationship("Recipe", back_populates="ingredient")
