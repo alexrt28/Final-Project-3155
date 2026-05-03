@@ -29,3 +29,8 @@ def update(item_id: int, request: schema.PromoCodeUpdate, db: Session = Depends(
 @router.delete("/{item_id}")
 def delete(item_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, item_id=item_id)
+
+@router.get("/apply/{code}")
+def apply_promo(code: str, total: float, db: Session = Depends(get_db)):
+    final_price = controller.apply_and_validate_code(db, code, total)
+    return {"final_price": round(final_price, 2)}

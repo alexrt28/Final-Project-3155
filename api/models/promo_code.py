@@ -10,7 +10,7 @@ class PromoCode(Base):
     # removed: order_id = Column(Integer, ForeignKey("orders.id"))
     promo_code = Column(String(12), unique=True, nullable=False)
     discount = Column(Integer, nullable=False)
-    discount_type = Column(String)  # % off? flat $ off?
+    discount_type = Column(String(20))  # % off? flat $ off?
     expiry = Column(DATETIME, nullable=False)
 
     order = relationship("Order", back_populates="promo_code")

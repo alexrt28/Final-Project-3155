@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException, status, Response
 from ..models import promo_code as model
+from datetime import datetime
 
 
 def create(db: Session, request):
@@ -46,6 +47,9 @@ def update(db: Session, item_id, request):
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='ID not found')
         update_data = request.dict(exclude_unset = True)
+        if 'code' in update_data:
+            #Matching keys to the database columns
+            update_data['promo_code'] = update_data.pop('code').upper()
         item.update(update_data, synchronize_session=False)
         db.commit()
     except SQLAlchemyError as exception:
@@ -64,3 +68,26 @@ def delete(db: Session, item_id):
         error = str(exception.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def apply_and_validate_code(db: Session, code: str, total: float):
+    try:
+        promo = db.query(model.PromoCode).filter(model.PromoCode.promo_code == code.upper()).first()
+        if not promo:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Promo code not found')
+
+        if datetime.now() > promo.expiry:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Promo code has expired')
+
+        #Discount Calculation
+        discount_amount = 0
+        if promo.discount_type.lower() == "flat":
+            discount_amount = promo.discount
+        elif promo.discount_type.lower() == "percent":
+            discount_amount = total * (promo.discount/100)
+        new_total = total - discount_amount
+
+        return max(0, new_total)
+
+    except SQLAlchemyError as exception:
+        error = str(exception.__dict__['orig'])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
