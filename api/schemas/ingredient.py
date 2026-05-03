@@ -13,7 +13,7 @@ class IngredientCreate(IngredientBase):
 class IngredientUpdate(IngredientBase):
     name: Optional[str] = None
     quantity: Optional[int] = None
-    unit: Optional[int] = None
+    unit: Optional[str] = None
 
 class Ingredient(IngredientBase):
     id: int

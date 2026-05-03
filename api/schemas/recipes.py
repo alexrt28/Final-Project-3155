@@ -8,6 +8,8 @@ class RecipeBase(BaseModel):
 
 
 class RecipeCreate(RecipeBase):
+    quantity: float
+    unit: str
     menu_item_id: int
     ingredient_id: int
 
