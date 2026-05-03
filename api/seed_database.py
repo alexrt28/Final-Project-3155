@@ -131,24 +131,28 @@ def seed_all():
         recipe_turkey_1 = recipes.Recipe(
             menu_item_id=turkey_club.id,
             ingredient_id=bread.id,
-            quantity=2
+            quantity=2,
+            unit="slice"
         )
         recipe_turkey_2 = recipes.Recipe(
             menu_item_id=turkey_club.id,
             ingredient_id=turkey.id,
-            quantity=4
+            quantity=4,
+            unit = "slice"
         )
 
         recipe_spaghetti_1 = recipes.Recipe(
             menu_item_id=spaghetti.id,
             ingredient_id=linguine.id,
-            quantity=2
+            quantity=2,
+            unit="cup"
         )
 
         recipe_spaghetti_2 = recipes.Recipe(
             menu_item_id=spaghetti.id,
             ingredient_id=marinara.id,
-            quantity=1
+            quantity=1,
+            unit="cup"
         )
 
 
