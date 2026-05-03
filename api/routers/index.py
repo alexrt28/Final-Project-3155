@@ -1,7 +1,4 @@
-from . import orders, order_details, menu_items, recipes, ingredients
-from . import customers, orders, order_details, menu_items, promo_code
-from . import orders, order_details, menu_items, recipes, ingredients, payment, reviews
-from . import customers, orders, order_details, menu_items
+from . import orders, order_details, menu_items, recipes, ingredients, customers, promo_code, payment, reviews
 
 
 def load_routes(app):
